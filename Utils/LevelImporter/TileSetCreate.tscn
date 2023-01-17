@@ -1,0 +1,28 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://Utils/LevelImporter/TileSetCreate.gd" type="Script" id=1]
+[ext_resource path="res://Utils/LevelImporter/Levels/TileMaps/LEVEL01.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Utils/LevelImporter/Levels/TileMaps/LEVEL02.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Images/Tilesets/TileImages/L1_Tiles.png" type="Texture" id=18]
+
+
+[node name="TileSetCreate" type="Node"]
+script = ExtResource( 1 )
+tileset_name = "L2_Tiles"
+tilemap_name = "LEVEL02"
+tileset_image = "res://Images/L2_Tiles.png"
+C64level_name = "res://Utils/LevelImporter/Levels/TileMapData/L2_Data.asm"
+tileset_tres = "res://Utils/LevelImporter/Levels/TileMaps/L2_Tiles.tres"
+
+[node name="TileMapBase" type="TileMap" parent="."]
+cell_size = Vector2( 8, 8 )
+format = 1
+
+[node name="Sprite" type="Sprite" parent="."]
+visible = false
+position = Vector2( 256.365, -25.7953 )
+texture = ExtResource( 18 )
+
+[node name="LEVEL01" parent="." instance=ExtResource( 2 )]
+
+[node name="LEVEL02" parent="." instance=ExtResource( 3 )]

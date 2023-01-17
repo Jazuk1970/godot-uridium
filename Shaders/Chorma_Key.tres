@@ -1,0 +1,22 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=2]
+
+[sub_resource type="Shader" id=1]
+code = "shader_type canvas_item;
+uniform vec4 background_colour:hint_color;
+uniform bool replace_bkgnd_colour;
+uniform float tolerance:hint_range(0.0,1.0) = 0.001;
+void fragment() {
+	vec4 colour = texture(TEXTURE,UV);
+	float dist = distance(colour.rgb,background_colour.rgb);
+	if (dist <= tolerance && replace_bkgnd_colour)
+	{
+		colour.a = 0.0;
+	}
+	COLOR = colour; //	vec4(colour.rgb,colour.a);
+}"
+
+[resource]
+shader = SubResource( 1 )
+shader_param/background_colour = Color( 0.282353, 0.227451, 0.666667, 1 )
+shader_param/replace_bkgnd_colour = null
+shader_param/tolerance = 0.001

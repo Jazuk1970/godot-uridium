@@ -1,0 +1,44 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://Scenes/Levels/Level1.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Scenes/Player/Player.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Game.gd" type="Script" id=4]
+[ext_resource path="res://Camera2D.gd" type="Script" id=5]
+
+[node name="Game" type="Node"]
+script = ExtResource( 4 )
+__meta__ = {
+"_edit_vertical_guides_": [ -462.095 ]
+}
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2( 0.943878, 64.6048 )
+current = true
+smoothing_enabled = true
+script = ExtResource( 5 )
+
+[node name="Tween" type="Tween" parent="Camera2D"]
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="CurrentLevel" type="Node" parent="."]
+
+[node name="Level" parent="CurrentLevel" instance=ExtResource( 1 )]
+collisiontiles = {
+"Block": "Explode",
+"Cross": "Explode",
+"Pod": "Destroy",
+"Post": "Explode",
+"Segment": "Destroy",
+"Ship": "Destroy"
+}
+
+[node name="Enemies" type="Node" parent="CurrentLevel"]
+
+[node name="Bullets" type="Node" parent="CurrentLevel"]
+
+[node name="Player" type="Node" parent="."]
+
+[node name="Player" parent="Player" instance=ExtResource( 2 )]
+position = Vector2( 0.943848, 63.8167 )
+z_index = 1

@@ -1,0 +1,12 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://Globals/AudioManager/AudioManager.gd" type="Script" id=1]
+
+[node name="Audio_Manager" type="Node"]
+script = ExtResource( 1 )
+samples = [ null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null ]
+
+[node name="sfx_players" type="Node" parent="."]
+
+[node name="music_player" type="AudioStreamPlayer" parent="."]
+[connection signal="finished" from="music_player" to="." method="_on_music_player_finished"]

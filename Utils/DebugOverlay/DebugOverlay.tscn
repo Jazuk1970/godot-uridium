@@ -1,0 +1,21 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://Utils/DebugOverlay/DebugOverlay.gd" type="Script" id=1]
+[ext_resource path="res://Utils/DebugOverlay/RobotoMono-Regular.tres" type="DynamicFont" id=2]
+
+[node name="DebugOverlay" type="CanvasLayer"]
+script = ExtResource( 1 )
+font = ExtResource( 2 )
+
+[node name="Stats" type="MarginContainer" parent="."]
+margin_left = 2.0
+margin_top = 2.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Stats"]
+custom_constants/separation = 0
+__meta__ = {
+"_edit_use_anchors_": false
+}

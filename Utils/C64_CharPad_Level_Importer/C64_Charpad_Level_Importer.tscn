@@ -1,0 +1,11 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://Utils/LevelImporter/TileSetCreate.gd" type="Script" id=1]
+
+[node name="Level Importer" type="Node"]
+script = ExtResource( 1 )
+tileset_name = "L1_Tiles"
+tilemap_name = "LEVEL01"
+level_name = "L1_Data"
+create_tilemap = true
+create_tileset = true
