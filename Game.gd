@@ -6,7 +6,7 @@ onready var level = $CurrentLevel
 var map:Object
 #var play_area:Rect2	
 var fps
-
+var level_data:Dictionary = {}
 
 
 
@@ -22,12 +22,12 @@ func _ready():
 		#Connect the player speed change to the level  scroll speed
 #		player.connect("Position_Changed",map,"set_scroll")
 		map.player = player
-
+	
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):
 #	pass
 
-func _physics_process(delta):
+func _physics_process(_delta):
 	fps = Engine.get_frames_per_second()
 	camera.position.x = player.position.x
 	if Input.is_action_just_pressed("ui_cancel"):

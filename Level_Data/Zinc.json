@@ -1,0 +1,98 @@
+{
+  "Level": {
+            "Enemies":{
+              "Type_01":{
+                "Moves":[
+                          {
+                            "OpCode": "MOVE",
+                            "LinearSpeed":250.0,
+                            "Position":"Vector2(100,50)"
+                          },
+                          {
+                            "OpCode": "MOVE",
+                            "LinearSpeed":250.0,
+                            "Position":"Vector2(50,-50)"
+                          },
+                          {
+                            "OpCode": "MOVE",
+                            "LinearSpeed":250.0,
+                            "Position":"Vector2(-50,-50)"
+                          },
+                          {
+                            "OpCode": "MOVE",
+                            "LinearSpeed":250.0,
+                            "Position":"Vector2(-50,50)"
+                          },
+                          {
+                            "OpCode": "WAVE",
+                            "LinearSpeed":250.0,
+                            "Time":2.0,
+                            "Amplitude":4.0,
+                            "Frequency":5.0
+                          },
+          {
+                            "OpCode": "REPEAT"
+                          }
+                          ],
+                  "SpriteFrame":49,
+                  "Points":50,
+                  "Life":1
+                  },
+        "Type_02":{
+                                "Moves":[
+                                          {
+                                            "OpCode": "WAVE",
+                                            "LinearSpeed":250.0,
+                                            "Time":2.0,
+                                            "Amplitude":4.0,
+                                            "Frequency":5.0
+                                          },
+                                          {
+                                            "OpCode": "LOOP",
+                                            "LinearSpeed":0.0,
+                                            "Direction":"Vector2(1,0)",
+                                            "Time":0.85,
+                                            "Radius":55
+                                          },
+                                          {
+                                            "OpCode": "MOVE",
+                                            "LinearSpeed":250.0,
+                                            "Direction":"Vector2(1,-1)",
+                                            "Time":0.433
+                                          },
+                                          {
+                                            "OpCode": "MOVE",
+                                            "LinearSpeed":250.0,
+                                            "Time":1.5
+                                          },
+                                          {
+                                            "OpCode": "LOOP",
+                                            "LinearSpeed":0.0,
+                                            "EndAngle":90.0,
+                                            "Direction":"Vector2(-1,0)",
+                                            "Time":1.5,
+                                            "Radius":-55
+                                          },
+                                          {
+                                            "OpCode": "LOOP",
+                                            "LinearSpeed":0.0,
+                                            "StartAngle":270.0,
+                                            "EndAngle":360.0,
+                                            "Direction":"Vector2(1,0)",
+                                            "Time":1.5,
+                                            "Radius":55
+                                          },
+                                          {
+                                            "OpCode": "REPEAT"
+                                          }
+                                          ],
+                                  "SpriteFrame":49,
+                                  "Points":50,
+                                  "Life":1
+                                  }
+                                },
+            "Player_Start_Position":"0814",
+            "Next_Level":"02",
+            "LevelName":"Pipeline 01"
+          }
+}

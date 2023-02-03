@@ -24,6 +24,9 @@ export (bool) var replace_bkgnd_colour
 export (bool) var scroll_with_player
 export (Vector2) var scroll_ratio = Vector2(0.00005,0.0)
 export (Vector2) var scroll_oversize_ratio = Vector2(12.5,50.0)
+export (PackedScene) var enemy
+
+var level_data:Dictionary = {}
 
 #Defaults
 export (int) var default_points = 10
@@ -53,17 +56,16 @@ func _ready():
 
 	if objects:
 		tiles[objects.name] = parse_tiles(objects)
-
-		
 	process_map()
-
-func _physics_process(delta):
+	level_data = load_level_data(levelname)
+	
+func _physics_process(_delta):
 	if bkgnd_scroll:
 		if player and scroll_with_player:
 			bkgnd_scroll_pos = player.position
 		bkgnd_scroll.material.set_shader_param("scroll_pos",bkgnd_scroll_pos)
 
-func _process(delta):
+func _process(_delta):
 	pass
 
 func process_map():
@@ -97,12 +99,12 @@ func get_tile_details(_tile_id:int,_tilemap:TileMap) -> Dictionary:
 	var _tile_attributes = tiles[_tilemap.name][_tile_id]
 	return _tile_attributes
 	
-func get_tile_at_location(pos,map:TileMap) -> Array:
+func get_tile_at_location(pos,_map:TileMap) -> Array:
 #Get the tile ID and tile map position from the given world position
-	if map:
-		var _tile_map_position = get_tile_map_position(pos,map)
+	if _map:
+		var _tile_map_position = get_tile_map_position(pos,_map)
 		if _tile_map_position != Vector2.INF:
-			var _t = map.get_cellv(_tile_map_position)
+			var _t = _map.get_cellv(_tile_map_position)
 			return [_t,_tile_map_position]
 		else:
 			return []
@@ -110,17 +112,17 @@ func get_tile_at_location(pos,map:TileMap) -> Array:
 	else:
 		return []
 
-func get_tile_map_position(pos,map:TileMap) -> Vector2:
-	if map:
-		var localposition = map.to_local(pos)
-		var tilemapposition = map.world_to_map(localposition)
+func get_tile_map_position(pos,_map:TileMap) -> Vector2:
+	if _map:
+		var localposition = _map.to_local(pos)
+		var tilemapposition = _map.world_to_map(localposition)
 		return tilemapposition
 	else:
 		return Vector2.INF
 		
-func get_tile_at_position(pos,map:TileMap) -> Array:
-	if map:
-		var _t = map.get_cellv(pos)
+func get_tile_at_position(pos,_map:TileMap) -> Array:
+	if _map:
+		var _t = _map.get_cellv(pos)
 		return [_t,pos]
 	else:
 		return []
@@ -183,9 +185,21 @@ func destroy_tile_object(_tilemap:TileMap,_tile_id:int,_position:Vector2,_tile_a
 		var replace_tile = get_replacement_tile(_tile_id,_tilemap)
 		_tilemap.set_cellv(Vector2(_position),replace_tile)		
 	emit_signal("UpdateScore",points)
+
 func get_replacement_tile(_tile_id:int,_tilemap:TileMap) -> int:
 	var _new_tile:int = -1
 	var _tile_attributes = get_tile_details(_tile_id,_tilemap)
 	if _tile_attributes.has("Replace"):
 		_new_tile = _tile_attributes["Replace"].to_int()
 	return _new_tile
+
+func load_level_data(_level:String) -> Dictionary:
+	var _fname = "res://Level_Data/" + _level + ".json"
+	var _data = FS.LoadFile(_fname)
+	if _data[0] == 0:
+		return _data[1].Level
+	else:
+		return {}
+
+func spawn_enemy(_pos:Vector2,_ofset:Vector2,_rpts:int,_delay:float,_dir:Vector2,_type:String):
+	pass

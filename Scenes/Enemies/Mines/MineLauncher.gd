@@ -16,7 +16,7 @@ func _ready():
 	anim.play("Idle")
 	timer.start(cooldowntime)
 
-func _process(delta):
+func _process(_delta):
 	mines = getminecount()
 	
 func _on_AnimationPlayer_animation_finished(anim_name):

@@ -23,7 +23,7 @@ var rollrequest:bool = false
 var shiproll:float
 var _newrollreq:float
 var oktoshoot:bool = true
-export var bulletcooldown:float = 0.1
+export var bulletcooldown:float = 0.03
 
 var speed:Vector2
 var last_speed:Vector2 = Vector2.INF
@@ -195,14 +195,14 @@ func _on_RollTimer_timeout():
 	if rolldirection.x:
 		rollrequest = true
 
-func _on_Area2D_body_entered(body):
+func _on_Area2D_body_entered(_body):
 #	if body is TileMap:
 #		var _a = $Area2D.get_overlapping_bodies()
 #		var tile = get_tile_at_location(body.collider(position),body)
 #		collided = tile
 	pass
 
-func _on_Area2D_body_exited(body):
+func _on_Area2D_body_exited(_body):
 #	collided = null
 	pass
 

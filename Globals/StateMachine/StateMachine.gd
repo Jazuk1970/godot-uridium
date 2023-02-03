@@ -22,6 +22,7 @@ func add_states(_states:Object):
 			_state.connect("StateComplete", self,"_on_state_complete")
 			_state.connect("StateChange", self,"_on_state_change")
 			_state._owner = _owner
+			_state.fsm = self
 
 func _on_state_complete():
 	emit_signal("StateCompleted",state)
