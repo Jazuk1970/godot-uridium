@@ -43,6 +43,8 @@ backgroundtile = 1
 minelauncher = ExtResource( 6 )
 
 [node name="Background_Scroll" parent="." index="0" instance=ExtResource( 4 )]
+margin_top = -1.0
+margin_bottom = -835.0
 
 [node name="LevelObjects" type="Node" parent="." index="1"]
 

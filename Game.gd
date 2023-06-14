@@ -14,6 +14,7 @@ var level_data:Dictionary = {}
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+	Engine.set_target_fps(Engine.get_iterations_per_second())
 	map = level.get_node("Level")
 	if map:
 		player.play_area = map.play_area	
@@ -22,14 +23,15 @@ func _ready():
 		#Connect the player speed change to the level  scroll speed
 #		player.connect("Position_Changed",map,"set_scroll")
 		map.player = player
+		camera.player = player
 	
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):
 #	pass
 
 func _physics_process(_delta):
-	fps = Engine.get_frames_per_second()
-	camera.position.x = player.position.x
+	#fps = Engine.get_frames_per_second()
+	#camera.position.x = player.position.x
 	if Input.is_action_just_pressed("ui_cancel"):
 		get_tree().quit()
 
@@ -71,3 +73,9 @@ func _physics_process(_delta):
 ## launch ship and sequence
 ## end of level mini game.
 
+#yield(VisualServer,"frame_post_draw")
+#var img2=get_viewport().get_texture().get_data()
+
+#img2.flip_y()
+#img2.convert(Image.FORMAT_ETC2_RGBA8)
+#img2.save_png("vp2.png")

@@ -4,12 +4,16 @@ signal Explode(_position)
 signal Destroy(_position,_type)
 signal Position_Changed
 
-onready var sprite = $AnimatedSprite
+onready var sprite = $ViewportContainer/Viewport/AnimatedSprite
 onready var anim = $AnimationPlayer
 onready var rolltimer = $RollTimer
 onready var shootdelay = $ShootDelay
 onready var bulletspawnpoint = $BulletSpawn
+onready var player_viewport = $ViewportContainer/Viewport
+onready var shadow = $Shadow
 
+var player_tex
+var shadow_tex
 var levelobject:Object = self
 var velocity = Vector2.ZERO
 var acceleration = Vector2(0.08,0.25)
@@ -37,6 +41,7 @@ var play_area_bounds:Vector2 = Vector2(50,0)
 var collided
 var collisions:Array
 var last_collision:String
+
 
 
 func _ready():
@@ -79,6 +84,7 @@ func get_input():
 	return _input
 
 func _physics_process(delta):
+	#update()
 	input = get_input()
 	if position.x <= play_area.position.x + play_area_bounds.x:
 		input.x = 1
@@ -113,7 +119,13 @@ func _physics_process(delta):
 	position += newpos
 	position.y = clamp(position.y,play_area.position.y + play_area_bounds.y,play_area.size.y-play_area_bounds.y)
 	#emit_signal("Position_Changed",position)
-
+	
+	#update the shadow shader texture
+	#shadow.material.set_shader_param("player_ship",player_viewport.get_texture())
+	player_tex = player_viewport.get_texture()
+	$Shadow.texture = player_tex
+	
+	
 func _on_AnimationPlayer_animation_finished(anim_name):
 	match anim_name:
 		"Flip_RL":
@@ -261,3 +273,6 @@ func shoot():
 
 func _on_ShootDelay_timeout():
 	oktoshoot = true
+
+#func _draw():
+	#$Shadow.material.set_shader_param("player_ship",$AnimatedSprite.get_sprite_frames().get_frame($AnimatedSprite.animation,$AnimatedSprite.get_frame()))

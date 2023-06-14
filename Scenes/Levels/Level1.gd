@@ -15,8 +15,8 @@ func _ready():
 	var en_repeats:int = 5
 	var en_delay:float = 7
 	var dir:Vector2 = Vector2.RIGHT
-	spawn_enemy(en_start_pos,en_offset,en_repeats,en_delay,dir,"Type_01")
-	pass
+	spawn_enemy(en_start_pos,en_offset,en_repeats,en_delay,dir,"Type_01",[2])
+	#pass
 #	size = play_area.size + Vector2(abs(play_area.position.x),abs(play_area.position.y))
 #	offset = (size * ratio) /2
 #	bkgnd.rect_size = size * (1 + ratio)
@@ -55,7 +55,7 @@ func spawn_minelauncher(_tilelocation):
 func _on_Level_UpdateScore(points):
 	print("Score Updated: ",points)
 
-func spawn_enemy(pos:Vector2,ofset:Vector2,rpts:int,delay:float,dir:Vector2,type:String):
+func spawn_enemy(pos:Vector2,ofset:Vector2,rpts:int,delay:float,dir:Vector2,type:String,pattern:Array):
 	var enemies = get_tree().get_root().get_node("Game/CurrentLevel/Enemies")
 	for r in range(rpts):
 		var e = enemy.instance()
@@ -64,4 +64,5 @@ func spawn_enemy(pos:Vector2,ofset:Vector2,rpts:int,delay:float,dir:Vector2,type
 		e.direction = dir
 		e.enemy_data = level_data["Enemies"][type]
 		e.sprite_frame = e.enemy_data["SpriteFrame"]
+		e.pattern_index = pattern[r % pattern.size()]
 		enemies.add_child(e)

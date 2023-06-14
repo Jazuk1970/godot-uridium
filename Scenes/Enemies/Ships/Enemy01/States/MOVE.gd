@@ -51,6 +51,5 @@ func logic(_args:Dictionary = {}):
 			if attargetpos:
 				_owner.position = targetpos
 	else:
-		print(_owner.position)
 		_owner.emit_signal("MoveComplete")
 

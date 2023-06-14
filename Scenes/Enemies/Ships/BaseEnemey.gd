@@ -34,11 +34,18 @@ var Epsilon:float = 1
 var enemy_data:Dictionary = {}
 var current_move:Dictionary = {}
 var total_moves:int = 0
+var total_patterns:int = 0
+var pattern_index:int = -1
 var move_index:int = 0
+var move_list:Array = []
+var pattern_list:Array = []
 var sprite_frame:int = 0
 var debugstatename:String
-var offset_complete:bool = false
+var offset_completed:bool = false
 var offset_count:int = 0
+var pattern:String = ''
+var next_pattern:String = ''
+
 
 
 func _ready():
@@ -95,8 +102,18 @@ func _base_initialise():
 			fsm.state_change("INIT")
 		else:
 			if enemy_data.has("Moves"):
-				total_moves = enemy_data["Moves"].size()
+				total_patterns = enemy_data["Moves"].size()
+#				pattern_list.clear()
+#				pattern_list = enemy_data["Moves"].keys()
 				move_index = 0
+				if pattern_index < 0: # or !pattern_list.has(next_pattern):
+					pattern_index = 0
+#					pattern = pattern_list[pattern_index]
+#					next_pattern = pattern
+#				else:
+#					pattern = next_pattern
+				move_list = get_move_list(pattern_index)
+				total_moves = move_list.size()
 				process_current_move(move_index)
 	spr.frame = sprite_frame
 
@@ -124,7 +141,7 @@ func check_target(target_position:Vector2) -> bool:
 		return false
 
 func process_current_move(cm:int):
-	current_move = enemy_data["Moves"][cm]
+	current_move = move_list[cm]
 	if current_move:
 		if current_move.has("OpCode"):
 			if current_move["OpCode"] == "REPEAT":
@@ -145,10 +162,19 @@ func _on_BaseEnemey_MoveComplete():
 		move_index = 0
 	process_current_move(move_index)
 
+func set_move_pattern(mp:int):
+	if mp <= total_patterns:
+		pattern_index = mp
+		move_index = 0
+
+func get_move_list(pn:int) -> Array:
+	#var pi = pattern_list.find(pn)
+	return enemy_data["Moves"][pn]
+
 func offset_complete() -> bool:
-	if !offset_complete:
+	if !offset_completed:
 		offset_count -= 1
 		if offset_count <= 0:
-			offset_complete = true
+			offset_completed = true
 			offset_count = 0
-	return offset_complete
+	return offset_completed

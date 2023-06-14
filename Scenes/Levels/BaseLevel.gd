@@ -201,5 +201,5 @@ func load_level_data(_level:String) -> Dictionary:
 	else:
 		return {}
 
-func spawn_enemy(_pos:Vector2,_ofset:Vector2,_rpts:int,_delay:float,_dir:Vector2,_type:String):
+func spawn_enemy(_pos:Vector2,_ofset:Vector2,_rpts:int,_delay:float,_dir:Vector2,_type:String,_pattern:Array):
 	pass

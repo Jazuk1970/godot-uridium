@@ -1,6 +1,7 @@
 class_name ZoomingCamera2D
 extends Camera2D
 
+var player:Object
 # Lower cap for the `_zoom_level`.
 export var min_zoom := 1.0
 # Upper cap for the `_zoom_level`.
@@ -40,3 +41,6 @@ func _input(event):
 #	if event.button_index == BUTTON_WHEEL_DOWN:
 	if event.is_action_pressed("zoom_out"):
 		_set_zoom_level(_zoom_level + zoom_factor)
+
+func _physics_process(_delta):
+	position.x = player.position.x	
