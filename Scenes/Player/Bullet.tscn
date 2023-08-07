@@ -14,8 +14,8 @@ position = Vector2( 0, 2 )
 
 [node name="Sprite" type="Sprite" parent="Node"]
 texture = ExtResource( 1 )
-vframes = 12
 hframes = 8
+vframes = 12
 frame = 67
 
 [node name="RayCast2D1" type="RayCast2D" parent="Node"]
@@ -29,4 +29,5 @@ position = Vector2( 0, -10 )
 enabled = true
 cast_to = Vector2( 8, 0 )
 collision_mask = 200
+
 [connection signal="screen_exited" from="VisibilityNotifier2D" to="." method="_on_VisibilityNotifier2D_screen_exited"]

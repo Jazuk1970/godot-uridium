@@ -1,23 +1,19 @@
 extends Node2D
+#Signals
 signal Destroy(_position,_type)
+#Exports
+export var speed:float = 1200.0
 
+#Onready Vars
 onready var sprite = $Node/Sprite
 onready var node = $Node
 onready var ray1 = $Node/RayCast2D1
 onready var ray2 = $Node/RayCast2D2
 
-var velocity = Vector2.ZERO
-var acceleration = Vector2(0.08,0.25)
+#Vars
 var direction = Vector2.ZERO
-
-export var speed:float = 500.0
-
-var play_area:Rect2
-var play_area_bounds:Vector2 = Vector2(50,50)
-var collided
+var collided:Array
 var collisions:Array
-var last_collision:String
-
 
 func _ready():
 	collisions.clear()
@@ -25,7 +21,7 @@ func _ready():
 
 func _physics_process(delta):
 	collided = check_for_collision()
-	if collided[0] == true:
+	if collided[0]:
 		match collided[1]:
 			"Block":
 				remove_bullet()
@@ -37,25 +33,30 @@ func _physics_process(delta):
 		position.x += speed * delta * direction.x
 	
 func check_for_collision() -> Array:
-	var _result:Array = [false,null,null,null]
+	var _result:Array = [false,[false,null,null,null]]
+	_result = check_ray(ray1)
+	if not _result[0]:
+		_result = check_ray(ray2)
+		if !_result[0]:
+			collisions.clear()
+	return _result[1]
+
+func check_ray(rc:RayCast2D) -> Array:
+	var _result:Array = [false,[false,null,null,null]]
 	var _colliding:bool = false
-	if ray1.is_colliding():
+	if rc.is_colliding():
 		_colliding = true
-		var _collision = ray1.get_collider() #move_and_collide(_newpos,true,true,true)
+		_result[0] = _colliding
+		var _collision = rc.get_collider() #move_and_collide(_newpos,true,true,true)
 		if _collision:
-			var _pos = ray1.get_collision_point()
-			_result = collision_match(_collision,_pos)
-			_result.append(_collision)
-	if _result == [false,null,null,null] and ray2.is_colliding():
-		_colliding = true
-		var _collision = ray2.get_collider() #move_and_collide(_newpos,true,true,true)
-		if _collision:
-			var _pos = ray2.get_collision_point()
-			_result = collision_match(_collision,_pos)
-			_result.append(_collision)
-	if !_colliding:
-		collisions.clear()
-	return _result
+			var _pos = rc.get_collision_point()
+			_result[1] = collision_match(_collision,_pos)
+			_result[1].append(_collision)
+	return _result	
+
+#TODO:
+# This could perhaps move the acutal result of collision into the collider.
+# So for example if collider.has("Collision_Check").. call collsion?
 
 func collision_match(_collision,_pos) -> Array:
 	var _result:Array = [false,null,null]
@@ -73,7 +74,6 @@ func collision_match(_collision,_pos) -> Array:
 								"Block","Destroy":
 									_result = [true,_action,_collision_details]
 	return _result
-	
 
 func remove_collision(_collision,_collisions):
 	if _collisions.has(_collision):
@@ -85,7 +85,6 @@ func add_collision(_collision,_collisions):
 func remove_bullet():
 	queue_free()
 
-
 func _on_VisibilityNotifier2D_screen_exited():
 	remove_bullet()
 
@@ -94,7 +93,6 @@ func destroy_object(collision_object):
 		destroy_tile_object(collision_object)
 	else:
 		print("Destruction of object: ",collision_object, " requested.")	
-		
 
 func destroy_tile_object(collision_object):
 	var tile = collision_object[2][0]

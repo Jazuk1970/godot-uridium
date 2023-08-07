@@ -1,8 +1,8 @@
 extends KinematicBody2D
 export (PackedScene) var oBullet
-signal Explode(_position)
-signal Destroy(_position,_type)
-signal Position_Changed
+#signal Explode(_position)
+#signal Destroy(_position,_type)
+#signal Position_Changed
 
 onready var sprite = $ViewportContainer/Viewport/AnimatedSprite
 onready var anim = $AnimationPlayer
@@ -12,35 +12,40 @@ onready var bulletspawnpoint = $BulletSpawn
 onready var player_viewport = $ViewportContainer/Viewport
 onready var shadow = $Shadow
 
-var player_tex
-var shadow_tex
-var levelobject:Object = self
-var velocity = Vector2.ZERO
-var acceleration = Vector2(0.08,0.25)
-var direction = Vector2.ZERO
-var max_speed = 350.0
+var player_tex:Texture
+#var shadow_tex:Texture
+var levelobject:Object# = self
+var play_area:Rect2
+var play_area_bounds:Vector2 = Vector2(50,15)
+var collided
+var collisions:Array
+var last_collision:String
+var current_anim:String
+
+#Speed Variables
+var max_speed = 325.0
 var min_speed = 100.0
-var vertical_speed = 180
+var velocity = Vector2.ZERO
+var acceleration = Vector2(800.0,800.0) #Vector2(0.08,0.25)
+var direction = Vector2.RIGHT
+var vertical_speed = 175
+#var speed:Vector2
+#var last_speed:Vector2 = Vector2.INF
+
+#Roll Variables
 var rollgracetime:float = .3
 var rolldirection:Vector2 = Vector2.ZERO
 var rollrequest:bool = false
 var shiproll:float
 var _newrollreq:float
+
+#Shooting Variables
 var oktoshoot:bool = true
 export var bulletcooldown:float = 0.03
 
-var speed:Vector2
-var last_speed:Vector2 = Vector2.INF
-var test_speed
-var test_speed1
-
-var current_anim:String
 var input:Vector2 = Vector2.ZERO
-var play_area:Rect2
-var play_area_bounds:Vector2 = Vector2(50,0)
-var collided
-var collisions:Array
-var last_collision:String
+
+
 
 
 
@@ -48,7 +53,8 @@ func _ready():
 	DebugOverlay.add_property(self,"collided","")
 	levelobject = get_tree().get_root().get_node('Game/CurrentLevel/Bullets')
 	change_direction(Vector2.RIGHT)
-	speed = Vector2(min_speed,0)
+	velocity = Vector2(min_speed,0.0)
+	#speed = Vector2(min_speed,0)
 	collisions.clear()
 
 
@@ -92,11 +98,16 @@ func _physics_process(delta):
 		input.x = -1
 	if rollrequest:
 		roll(rolldirection)
-	else:
-		change_direction(calculate_speed(input))
-	speed.y = vertical_speed * input.y
-	velocity.x = speed.x
-	velocity.y = lerp(velocity.y,speed.y,acceleration.y)
+	if input.x != 0:
+		velocity.x = move_toward(velocity.x,max_speed * input.x,acceleration.x * delta)
+		if velocity.x < min_speed  and velocity.x > 0.0 and input.x < 0:
+			velocity.x = -min_speed
+			change_direction(input)
+		elif velocity.x > -min_speed and velocity.x < 0.0 and input.x > 0:
+			velocity.x = min_speed
+			change_direction(input)
+
+	velocity.y = move_toward(velocity.y,vertical_speed * input.y,acceleration.y * delta)
 	var newpos:Vector2
 	newpos = velocity * delta
 	collided = check_for_collision(newpos)
@@ -117,8 +128,7 @@ func _physics_process(delta):
 #				_:
 #					print('Unhandled collision :', str(position,collided))
 	position += newpos
-	position.y = clamp(position.y,play_area.position.y + play_area_bounds.y,play_area.size.y-play_area_bounds.y)
-	#emit_signal("Position_Changed",position)
+	position.y = clamp(position.y,play_area.position.y - play_area_bounds.y,play_area.size.y+play_area_bounds.y)
 	
 	#update the shadow shader texture
 	#shadow.material.set_shader_param("player_ship",player_viewport.get_texture())
@@ -146,26 +156,26 @@ func change_direction(new_direction:Vector2):
 				anim.play("Flip_LR")
 				shiproll = 0.0
 
-func calculate_speed(_direction) -> Vector2:
-	if _direction.x == 0.0:
-		return Vector2.ZERO
-	if speed.x > 0.0:
-		if _direction.x > 0:
-			speed.x = lerp(speed.x,max_speed,acceleration.x)
-		else:
-			speed.x = lerp(speed.x,0,acceleration.x)
-	if speed.x < 0.0:
-		if _direction.x < 0:
-			speed.x = lerp(speed.x,-max_speed,acceleration.x)
-		else:
-			speed.x = lerp(speed.x,0,acceleration.x)
-
-	if abs(speed.x) < min_speed:
-		speed.x = min_speed * _direction.x
-	if speed.x > 0:
-		return Vector2.RIGHT
-	else:
-		return Vector2.LEFT
+#func calculate_speed(_direction) -> Vector2:
+#	if _direction.x == 0.0:
+#		return Vector2.ZERO
+#	if speed.x > 0.0:
+#		if _direction.x > 0:
+#			speed.x = lerp(speed.x,max_speed,acceleration.x)
+#		else:
+#			speed.x = lerp(speed.x,0,acceleration.x)
+#	if speed.x < 0.0:
+#		if _direction.x < 0:
+#			speed.x = lerp(speed.x,-max_speed,acceleration.x)
+#		else:
+#			speed.x = lerp(speed.x,0,acceleration.x)
+#
+#	if abs(speed.x) < min_speed:
+#		speed.x = min_speed * _direction.x
+#	if speed.x > 0:
+#		return Vector2.RIGHT
+#	else:
+#		return Vector2.LEFT
 
 func roll(_direction):
 	match _direction:

@@ -477,8 +477,7 @@ position = Vector2( 20, 0 )
 material = SubResource( 41 )
 position = Vector2( 20, 20 )
 z_index = -1
-[connection signal="Destroy" from="." to="." method="_on_Player_Destroy"]
-[connection signal="Explode" from="." to="." method="_on_Player_Explode"]
+
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_AnimationPlayer_animation_finished"]
 [connection signal="body_entered" from="Area2D" to="." method="_on_Area2D_body_entered"]
 [connection signal="body_exited" from="Area2D" to="." method="_on_Area2D_body_exited"]

@@ -27,7 +27,7 @@ func seek():
 func _physics_process(delta):
 	acceleration += seek()
 	velocity += acceleration * delta
-	velocity = velocity.clamped(speed)
+	velocity = velocity.limit_length(speed)
 	rotation = velocity.angle()
 	position += velocity * delta
 

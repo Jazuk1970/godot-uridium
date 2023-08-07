@@ -42,5 +42,5 @@ func _input(event):
 	if event.is_action_pressed("zoom_out"):
 		_set_zoom_level(_zoom_level + zoom_factor)
 
-func _physics_process(_delta):
-	position.x = player.position.x	
+#func _physics_process(_delta):
+#	position.x = player.position.x	

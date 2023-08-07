@@ -27,21 +27,13 @@ script = ExtResource( 5 )
 
 [node name="CurrentLevel" type="Node" parent="."]
 
-[node name="Level" parent="CurrentLevel" instance=ExtResource( 1 )]
-collisiontiles = {
-"Block": "Explode",
-"Cross": "Explode",
-"Pod": "Destroy",
-"Post": "Explode",
-"Segment": "Destroy",
-"Ship": "Destroy"
-}
+[node name="Level" parent="CurrentLevel" groups=["Levels"] instance=ExtResource( 1 )]
 
-[node name="Enemies" type="Node" parent="CurrentLevel"]
+[node name="Enemies" type="Node" parent="CurrentLevel" groups=["Enemies"]]
 
-[node name="Bullets" type="Node" parent="CurrentLevel"]
+[node name="Bullets" type="Node" parent="CurrentLevel" groups=["Bullets"]]
 
-[node name="Player" type="Node" parent="."]
+[node name="Player" type="Node" parent="." groups=["Players"]]
 
 [node name="Player" parent="Player" instance=ExtResource( 2 )]
 position = Vector2( 0.943848, 63.8167 )

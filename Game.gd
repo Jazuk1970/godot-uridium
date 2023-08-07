@@ -17,7 +17,7 @@ func _ready():
 	Engine.set_target_fps(Engine.get_iterations_per_second())
 	map = level.get_node("Level")
 	if map:
-		player.play_area = map.play_area	
+		player.play_area = map.play_area
 		var bgc = map.backgroundcolour
 		VisualServer.set_default_clear_color(bgc)
 		#Connect the player speed change to the level  scroll speed
@@ -34,6 +34,8 @@ func _physics_process(_delta):
 	#camera.position.x = player.position.x
 	if Input.is_action_just_pressed("ui_cancel"):
 		get_tree().quit()
+	if player:
+		camera.position.x = player.position.x
 
 
 #func getplayarea():
