@@ -10,6 +10,8 @@ var player:Object
 #Objects
 var map:TileMap
 var objects:TileMap
+var vpc:ViewportContainer
+var vp:Viewport
 var cellsize:Vector2
 var map_area:Rect2
 var play_area:Rect2
@@ -33,7 +35,9 @@ export (int) var default_points = 10
 
 func _ready():
 	parent = get_parent()
-	map = get_node("MAP")
+	vpc = get_node("VPC")
+	vp= vpc.get_node("VP")
+	map = vp.get_node("MAP")
 	objects = get_node("OBJECTS")
 	bkgnd_scroll = get_node("Background_Scroll")
 	if map:
@@ -41,6 +45,9 @@ func _ready():
 		cellsize = map.cell_size
 		map_area = map.get_used_rect()
 		play_area = Rect2(map_area.position * cellsize,map_area.end * cellsize)
+		#vpc.rect_position = play_area.position
+		vpc.rect_size = play_area.end		#vp.size = map_area
+		vp.size = play_area.end
 		if map.material:
 			map.material.set_shader_param("background_colour",backgroundcolour)
 			map.material.set_shader_param("replace_bkgnd_colour",replace_bkgnd_colour)

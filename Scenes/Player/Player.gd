@@ -23,7 +23,7 @@ var last_collision:String
 var current_anim:String
 
 #Speed Variables
-var max_speed = 325.0
+var max_speed = 375.0
 var min_speed = 100.0
 var velocity = Vector2.ZERO
 var acceleration = Vector2(800.0,800.0) #Vector2(0.08,0.25)

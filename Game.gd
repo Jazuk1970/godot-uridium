@@ -15,7 +15,23 @@ var level_data:Dictionary = {}
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	Engine.set_target_fps(Engine.get_iterations_per_second())
-	map = level.get_node("Level")
+	
+	#NOTE: This should be temporary and part of the game set-up
+	
+	#Get the level name 
+	var _o = load_level("Level1VP")
+	if not _o:
+		print("Level not found!!")
+		get_tree().quit()
+	#Create an instance of the level
+	var _level = _o.instance()
+	#Name the level
+	_level.name = "LevelVP"
+	#Add the level to the current level node
+	level.add_child(_level)
+	#Move the node to the top of the current level tree
+	level.move_child(_level,0)
+	map = _level #level.get_node("Level")
 	if map:
 		player.play_area = map.play_area
 		var bgc = map.backgroundcolour
@@ -24,6 +40,7 @@ func _ready():
 #		player.connect("Position_Changed",map,"set_scroll")
 		map.player = player
 		camera.player = player
+		
 	
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):
@@ -37,6 +54,9 @@ func _physics_process(_delta):
 	if player:
 		camera.position.x = player.position.x
 
+func load_level(filename) -> Object:
+	var _level = load("res://Scenes/Levels/"+filename+".tscn")
+	return _level
 
 #func getplayarea():
 
